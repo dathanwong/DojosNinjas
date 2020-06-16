@@ -1,6 +1,7 @@
 package com.dathanwong.dojosninjas.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -30,9 +32,13 @@ public class Ninja {
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="dojo_id")
-    private Dojo dojo;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+    		name="ninjas_dojos",
+    		joinColumns = @JoinColumn(name = "ninja_id"),
+    		inverseJoinColumns = @JoinColumn(name = "dojo_id")
+    )
+    private List<Dojo> dojo;
     
     public Ninja() {
         
@@ -97,11 +103,11 @@ public class Ninja {
 		this.updatedAt = updatedAt;
 	}
 
-	public Dojo getDojo() {
+	public List<Dojo> getDojo() {
 		return dojo;
 	}
 
-	public void setDojo(Dojo dojo) {
+	public void setDojo(List<Dojo> dojo) {
 		this.dojo = dojo;
 	}
 

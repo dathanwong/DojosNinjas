@@ -9,7 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -29,8 +31,14 @@ public class Dojo {
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
-    @OneToMany(mappedBy="dojo", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+    		name="ninjas_dojos",
+    		joinColumns = @JoinColumn(name = "dojo_id"),
+    		inverseJoinColumns = @JoinColumn(name = "ninja_id")
+    )
     private List<Ninja> ninjas;
+    
     
     public Dojo() {
         
